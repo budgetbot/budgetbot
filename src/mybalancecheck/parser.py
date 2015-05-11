@@ -5,7 +5,7 @@ from .categories import categories
 
 
 class Parser():
-    amt_regex = re.compile(r"[-+]?\d*\.\d+|\d+")
+    amt_regex = re.compile(r"[-+]?\$?\d*\.\d+|\d+")
 
     def category(self, message):
         for category, representations in categories.items():
@@ -15,7 +15,7 @@ class Parser():
 
     def amount(self, message):
         amt = self.amt_regex.findall(message)[0]
-        return float(amt), amt
+        return float(amt.replace('$', '')), amt
 
     def parse(self, message):
         # Extracts "Category", "Amount", "Payee" from message and returns as
