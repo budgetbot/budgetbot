@@ -2,6 +2,9 @@
 
 from flask import Flask, render_template, request
 
+import twilio.twiml
+
+from mybalancecheck import models
 from mybalancecheck import parser as _parser
 
 app = Flask(__name__)
@@ -9,8 +12,15 @@ parser = _parser.Parser()
 
 
 @app.route("/", methods=['GET', 'POST'])
-def hello():
-    return "Hello World!"
+def index():
+    return "Hello world!"
+
+
+@app.route("/sms", methods=['GET', 'POST'])
+def handler():
+    resp = twilio.twiml.Response()
+    resp.message("Hello world!")
+    return str(resp)
 
 
 if __name__ == "__main__":
