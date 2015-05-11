@@ -20,6 +20,8 @@ def index():
 @app.route("/sms", methods=['GET', 'POST'])
 def handler():
     message = request.values['Body']
+    logging.info("Received '{}'.".format(message))
+
     resp = twilio.twiml.Response()
 
     try:
@@ -35,6 +37,7 @@ def handler():
 
     except Exception as e:
         # Log the exception
+        logging.error("Error '{}'.".format(message))
         logging.exception(e)
 
         # Reply with misunderstood message
