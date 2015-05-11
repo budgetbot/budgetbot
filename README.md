@@ -1,4 +1,10 @@
-![](https://budgetbot.s3.amazonaws.com/budgetbot.gif)
+# Budgetbot
+
+Frictionless, mobile budgeting, driven by SMS, powered by Google Spreadsheets.
+
+Check it out...
+
+![](https://budgetbot.s3.amazonaws.com/budgetbot.3.gif)
 
 ## Heroku config variables
 
