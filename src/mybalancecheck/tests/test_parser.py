@@ -42,3 +42,11 @@ class TestParser(unittest.TestCase):
     def test_parser9(self):
         message = "\nGroc.     Harris Teeter   24\n"
         self.assertEqual(("Groceries", 24.0, "Harris Teeter"), self.parser.parse(message))
+
+    def test_parser10(self):
+        message = "Groc.   24\n"
+        self.assertEqual(("Groceries", 24.0, ""), self.parser.parse(message))
+
+    def test_parser11(self):
+        message = "groc.   harris teeter 24\n"
+        self.assertEqual(("Groceries", 24.0, "Harris Teeter"), self.parser.parse(message))
