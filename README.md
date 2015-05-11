@@ -1,3 +1,5 @@
+![](https://budgetbot.s3.amazonaws.com/budgetbot.gif)
+
 ## Heroku config variables
 
 ```
