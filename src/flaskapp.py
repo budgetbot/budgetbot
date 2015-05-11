@@ -1,6 +1,7 @@
 #!/usr/bin/env python
+import logging
 
-from flask import Flask, render_template, request
+from flask import Flask, request
 
 import twilio.twiml
 
@@ -18,8 +19,28 @@ def index():
 
 @app.route("/sms", methods=['GET', 'POST'])
 def handler():
+    message = request.values['Body']
     resp = twilio.twiml.Response()
-    resp.message("Hello world!")
+
+    try:
+        # Parse message
+        cat, amt, payee = parser.parse(message)
+
+        # Save transaction
+        tx = models.Transaction()
+        remaining = tx.save(cat, amt, payee)
+
+        # Reply with confirmation and remaining amount
+        reply = "Got it! Remaining: ${:,.2f}.".format(remaining)
+
+    except Exception as e:
+        # Log the exception
+        logging.exception(e)
+
+        # Reply with misunderstood message
+        reply = "Sorry, no comprende :("
+
+    resp.message(reply)
     return str(resp)
 
 
