@@ -3,5 +3,5 @@ categories = {
     "Groceries": ["Groceries", "groceries", "Groc.", "groc.", "Groc", "groc", ],
     "Life": ["Life", "life", ],
     "Fuel": ["Fuel", "fuel", ],
-    "Restaurants": ["Restaurants", "restaurants", "Rest.", "rest.", "Rest", "rest", ],
+    "Restaurants": ["Restaurants", "restaurants", "Restaurant", "restaurant", "Rest.", "rest.", "Rest", "rest", ],
 }
