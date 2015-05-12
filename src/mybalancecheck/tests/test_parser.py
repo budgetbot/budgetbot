@@ -91,10 +91,9 @@ class TestParser(unittest.TestCase):
         message = "groc. $24.17 Publix"
         self.assertEqual(("Groceries", 24.17, "Publix"), self.parser.parse(message))
 
-    @unittest.skip("Unkown categories not yet supported.")
     def test_parser13(self):
         """
-        Unknown category should be returned verbatim (currently failing).
+        Unknown category should be returned verbatim.
         """
-        message = "Other 88.88 Academy"
+        message = "other 88.88 Academy"
         self.assertEqual(("Other", 88.88, "Academy"), self.parser.parse(message))

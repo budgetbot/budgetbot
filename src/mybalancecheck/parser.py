@@ -12,6 +12,9 @@ class Parser():
             for representation in representations:
                 if message.lstrip().startswith(representation):
                     return category, representation
+        # Nothing found, return first entity within message
+        unknown = message.split()[0]
+        return unknown.title(), unknown
 
     def amount(self, message):
         amt = self.amt_regex.findall(message)[0]
