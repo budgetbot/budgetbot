@@ -33,7 +33,7 @@ def handler():
         remaining = tx.save(cat, amt, payee)
 
         # Reply with confirmation and remaining amount
-        reply = "Got it! Remaining: ${:,.2f}.".format(remaining)
+        reply = u"\U0001F44D ${:,.2f} at {} for {}. ${:,.2f} remaining.".format(amt, payee, cat, remaining)
 
     except Exception as e:
         # Log the exception
@@ -41,7 +41,7 @@ def handler():
         logging.exception(e)
 
         # Reply with misunderstood message
-        reply = "Sorry, no comprende :("
+        reply = u"Sorry, no comprende \U0001F62D"
 
     resp.message(reply)
     return str(resp)
