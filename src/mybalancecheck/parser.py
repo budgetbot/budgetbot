@@ -22,7 +22,7 @@ class Parser():
             return float(amt.replace('$', '')), amt
         except IndexError:
             # No amount
-            return None, ""
+            return 0.0, ""
 
     def parse(self, message):
         # Extracts "Category", "Amount", "Payee" from message and returns as
@@ -32,5 +32,5 @@ class Parser():
 
         # Strip representation and amt from message
         message = message.replace(cat_representation, "").replace(amt_representation, "")
-        payee = message.lstrip().rstrip().title() or None
+        payee = message.lstrip().rstrip().title() or ""
         return (cat, amt, payee)
