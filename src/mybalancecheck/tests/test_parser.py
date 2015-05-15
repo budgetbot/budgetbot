@@ -105,7 +105,6 @@ class TestParser(unittest.TestCase):
         message = "Groceries"
         self.assertEqual(("Groceries", 0.0, ""), self.parser.parse(message))
 
-    @unittest.skip("Fails")
     def test_parser15(self):
         """
         Apostrophe in payee.

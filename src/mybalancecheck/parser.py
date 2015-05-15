@@ -1,5 +1,5 @@
 import re
-
+import string
 
 from .categories import categories
 
@@ -32,5 +32,5 @@ class Parser():
 
         # Strip representation and amt from message
         message = message.replace(cat_representation, "").replace(amt_representation, "")
-        payee = message.lstrip().rstrip().title() or ""
+        payee = string.capwords(message.lstrip().rstrip()) or ""
         return (cat, amt, payee)
