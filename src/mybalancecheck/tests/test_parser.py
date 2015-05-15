@@ -75,7 +75,7 @@ class TestParser(unittest.TestCase):
         No payee.
         """
         message = "Groc.   24\n"
-        self.assertEqual(("Groceries", 24.0, ""), self.parser.parse(message))
+        self.assertEqual(("Groceries", 24.0, None), self.parser.parse(message))
 
     def test_parser11(self):
         """
@@ -97,3 +97,10 @@ class TestParser(unittest.TestCase):
         """
         message = "other 88.88 Academy"
         self.assertEqual(("Other", 88.88, "Academy"), self.parser.parse(message))
+
+    def test_parser14(self):
+        """
+        No amount.
+        """
+        message = "Groceries"
+        self.assertEqual(("Groceries", None, None), self.parser.parse(message))

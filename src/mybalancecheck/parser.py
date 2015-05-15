@@ -17,8 +17,12 @@ class Parser():
         return unknown.title(), unknown
 
     def amount(self, message):
-        amt = self.amt_regex.findall(message)[0]
-        return float(amt.replace('$', '')), amt
+        try:
+            amt = self.amt_regex.findall(message)[0]
+            return float(amt.replace('$', '')), amt
+        except IndexError:
+            # No amount
+            return None, ""
 
     def parse(self, message):
         # Extracts "Category", "Amount", "Payee" from message and returns as
@@ -28,5 +32,5 @@ class Parser():
 
         # Strip representation and amt from message
         message = message.replace(cat_representation, "").replace(amt_representation, "")
-        payee = message.lstrip().rstrip().title()
+        payee = message.lstrip().rstrip().title() or None
         return (cat, amt, payee)
