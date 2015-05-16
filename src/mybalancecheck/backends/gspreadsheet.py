@@ -21,9 +21,8 @@ class GSpreadsheetBackend(object):
         return self.conn
 
     def _balance(self, worksheet):
-        # This sucks
-        regex = re.compile(r'\$(\d+\.\d+)')
-        return float(regex.search(worksheet.acell("A2").value).groups()[0])
+        # This kinda sucks
+        return float(re.sub(r'[^-.\d]', '', worksheet.acell("A2").value))
 
     def save(self, cat, amt, payee):
         if self.conn is None:
