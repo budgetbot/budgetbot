@@ -27,12 +27,24 @@ class GSpreadsheetBackend(object):
         # This kinda sucks
         return decimal.Decimal(re.sub(r'[^-.\d]', '', worksheet.acell("A2").value))
 
-    def save(self, cat, amt, payee):
+    def _worksheet(self, cat):
         if self.conn is None:
             self._auth()
 
         # Grab worksheet
         worksheet = self.conn.open(cat).sheet1
+
+        return worksheet
+
+    def balance(self, cat):
+        return self._balance(self._worksheet((cat)))
+
+    def save(self, cat, amt, payee):
+        if self.conn is None:
+            self._auth()
+
+        # Grab worksheet
+        worksheet = self._worksheet(cat)
 
         # Read current balance from worksheet
         bal = self._balance(worksheet)
