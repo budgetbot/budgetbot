@@ -8,6 +8,9 @@ import twilio.twiml
 from mybalancecheck import models
 from mybalancecheck import parser as _parser
 
+import locale
+locale.setlocale(locale.LC_ALL, "")
+
 app = Flask(__name__)
 parser = _parser.Parser()
 
@@ -28,12 +31,21 @@ def handler():
         # Parse message
         cat, amt, payee = parser.parse(message)
 
+        # TODO
+        # If amt is 0, then query for remainder in cat
+
         # Save transaction
         tx = models.Transaction()
         remaining = tx.save(cat, amt, payee)
 
+        # TODO
+        # Use a template
         # Reply with confirmation and remaining amount
-        reply = u"\U0001F44D ${:,.2f} at {} for {}. ${:,.2f} remaining.".format(amt, payee, cat, remaining)
+        reply = u"\U0001F44D {} at {} for {}. {} remaining.".\
+            format(locale.currency(amt, grouping=True),
+                   payee,
+                   cat,
+                   locale.currency(remaining, grouping=True))
 
     except Exception as e:
         # Log the exception
