@@ -1,3 +1,4 @@
+import decimal
 import re
 import string
 
@@ -19,10 +20,10 @@ class Parser():
     def amount(self, message):
         try:
             amt = self.amt_regex.findall(message)[0]
-            return float(amt.replace('$', '')), amt
+            return decimal.Decimal(amt.replace('$', '')), amt
         except IndexError:
             # No amount
-            return 0.0, ""
+            return decimal.Decimal(0.0), ""
 
     def parse(self, message):
         # Extracts "Category", "Amount", "Payee" from message and returns as

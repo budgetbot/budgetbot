@@ -1,5 +1,8 @@
+import decimal
 import re
+
 import gspread
+
 import arrow
 
 from oauth2client.client import SignedJwtAssertionCredentials
@@ -22,7 +25,7 @@ class GSpreadsheetBackend(object):
 
     def _balance(self, worksheet):
         # This kinda sucks
-        return float(re.sub(r'[^-.\d]', '', worksheet.acell("A2").value))
+        return decimal.Decimal(re.sub(r'[^-.\d]', '', worksheet.acell("A2").value))
 
     def save(self, cat, amt, payee):
         if self.conn is None:

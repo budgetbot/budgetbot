@@ -1,3 +1,5 @@
+import decimal
+
 import unittest
 
 import mock
@@ -18,7 +20,7 @@ class TestGSpreadsheetBackend(unittest.TestCase):
         worksheet = mock.Mock(spec=Worksheet)
         worksheet.acell.return_value.value = "Amount\n[ $88.88 ]"
 
-        self.assertEqual(self.backend._balance(worksheet), 88.88)
+        self.assertEqual(self.backend._balance(worksheet), decimal.Decimal("88.88"))
 
     def test_balance2(self):
         """
@@ -27,4 +29,4 @@ class TestGSpreadsheetBackend(unittest.TestCase):
         worksheet = mock.Mock(spec=Worksheet)
         worksheet.acell.return_value.value = "Amount\n[ -$88.88 ]"
 
-        self.assertEqual(self.backend._balance(worksheet), -88.88)
+        self.assertEqual(self.backend._balance(worksheet), decimal.Decimal("-88.88"))
