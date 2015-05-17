@@ -7,6 +7,7 @@ import twilio.twiml
 
 from mybalancecheck import models
 from mybalancecheck import parser as _parser
+from mybalancecheck.parser.exceptions import ParserNoAmountException
 
 import locale
 locale.setlocale(locale.LC_ALL, "")
@@ -28,24 +29,33 @@ def handler():
     resp = twilio.twiml.Response()
 
     try:
-        # Parse message
-        cat, amt, payee = parser.parse(message)
+        try:
+            # Parse message
+            cat, amt, payee = parser.parse(message)
 
-        # TODO
-        # If amt is 0, then query for remainder in cat
+            # Save transaction
+            tx = models.Transaction()
+            remaining = tx.save(cat, amt, payee)
 
-        # Save transaction
-        tx = models.Transaction()
-        remaining = tx.save(cat, amt, payee)
+            # TODO
+            # Use a template
+            # Reply with confirmation and remaining amount
+            reply = u"\U0001F44D {} at {} for {}. {} remaining.".\
+                format(locale.currency(amt, grouping=True),
+                       payee,
+                       cat,
+                       locale.currency(remaining, grouping=True))
 
-        # TODO
-        # Use a template
-        # Reply with confirmation and remaining amount
-        reply = u"\U0001F44D {} at {} for {}. {} remaining.".\
-            format(locale.currency(amt, grouping=True),
-                   payee,
-                   cat,
-                   locale.currency(remaining, grouping=True))
+        except ParserNoAmountException as e:
+            # amt is 0, query for remaining budget in cat
+            cat = e.args[0]
+
+            budget = models.Budget(cat)
+            remaining = budget.balance()
+
+            reply = u"\U0001F44D {} remaining for {}.".\
+                format(locale.currency(remaining, grouping=True),
+                       cat)
 
     except Exception as e:
         # Log the exception

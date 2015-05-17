@@ -2,6 +2,7 @@ import decimal
 import unittest
 
 from .. import parser
+from ..parser.exceptions import ParserNoAmountException
 
 
 class TestParser(unittest.TestCase):
@@ -104,8 +105,11 @@ class TestParser(unittest.TestCase):
         """
         No amount.
         """
-        message = "Groceries"
-        self.assertEqual(("Groceries", 0.0, ""), self.parser.parse(message))
+        message = "groceries"
+        with self.assertRaises(ParserNoAmountException) as cm:
+            self.parser.parse(message)
+        self.assertEqual("Groceries", cm.exception.args[0])
+        self.assertEqual(message, cm.exception.args[1])
 
     def test_parser15(self):
         """

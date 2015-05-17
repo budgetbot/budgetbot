@@ -2,7 +2,9 @@ import decimal
 import re
 import string
 
-from .categories import categories
+from ..categories import categories
+
+from .exceptions import ParserNoAmountException
 
 
 class Parser():
@@ -18,20 +20,22 @@ class Parser():
         return unknown.title(), unknown
 
     def amount(self, message):
-        try:
-            amt = self.amt_regex.findall(message)[0]
-            return decimal.Decimal(amt.replace('$', '')), amt
-        except IndexError:
-            # No amount
-            return decimal.Decimal(0.0), ""
+        amt = self.amt_regex.findall(message)[0]
+        return decimal.Decimal(amt.replace('$', '')), amt
 
     def parse(self, message):
         # Extracts "Category", "Amount", "Payee" from message and returns as
         # a tuple
         cat, cat_representation = self.category(message)
-        amt, amt_representation = self.amount(message)
+
+        try:
+            amt, amt_representation = self.amount(message)
+
+        except Exception:
+            raise ParserNoAmountException(cat, message)
 
         # Strip representation and amt from message
         message = message.replace(cat_representation, "").replace(amt_representation, "")
         payee = string.capwords(message.lstrip().rstrip()) or ""
+
         return (cat, amt, payee)
