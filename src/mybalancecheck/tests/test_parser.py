@@ -124,3 +124,24 @@ class TestParser(unittest.TestCase):
         """
         message = "groc. -$88.88 Publix"
         self.assertEqual(("Groceries", -self.amt, "Publix"), self.parser.parse(message))
+
+    def test_parser17(self):
+        """
+        Period after amount.
+        """
+        message = "Groceries 88. Publix"
+        self.assertEqual(("Groceries", decimal.Decimal("88.0"), "Publix"), self.parser.parse(message))
+
+    def test_parser18(self):
+        """
+        Period after payee.
+        """
+        message = "Groceries 88.88 Publix."
+        self.assertEqual(("Groceries", self.amt, "Publix"), self.parser.parse(message))
+
+    def test_parser19(self):
+        """
+        Period after category, amount and payee.
+        """
+        message = "Groceries. 88.88. Publix."
+        self.assertEqual(("Groceries", self.amt, "Publix"), self.parser.parse(message))

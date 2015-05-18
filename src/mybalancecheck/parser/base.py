@@ -36,6 +36,12 @@ class Parser():
 
         # Strip representation and amt from message
         message = message.replace(cat_representation, "").replace(amt_representation, "")
-        payee = string.capwords(message.lstrip().rstrip()) or ""
+
+        # Strip whitespace and non-word characters from beginning and end of remaining message
+        message = re.sub(r'^[(\W|\s)]+', '', message)
+        message = re.sub(r'[(\W|\s)]+$', '', message)
+
+        # Capitalize message
+        payee = string.capwords(message) or ""
 
         return (cat, amt, payee)
