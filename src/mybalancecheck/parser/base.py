@@ -8,7 +8,7 @@ from .exceptions import ParserNoAmountException
 
 
 class Parser():
-    amt_regex = re.compile(r"[-+]?\$?\d*\.\d+|\d+")
+    amt_regex = re.compile(r"[-+]?\$?\d+\.?\d*")
 
     def category(self, message):
         for category, representations in categories.items():

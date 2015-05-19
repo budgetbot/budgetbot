@@ -145,3 +145,10 @@ class TestParser(unittest.TestCase):
         """
         message = "Groceries. 88.88. Publix."
         self.assertEqual(("Groceries", self.amt, "Publix"), self.parser.parse(message))
+
+    def test_parser20(self):
+        """
+        Negative amount, no decimal point.
+        """
+        message = "Groceries -88 Publix."
+        self.assertEqual(("Groceries", decimal.Decimal("-88.0"), "Publix"), self.parser.parse(message))
